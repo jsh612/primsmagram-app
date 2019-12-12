@@ -13,37 +13,47 @@ import apolloClientOptions from "./apollo";
 
 export default function App() {
   const [loaded, setLoaded] = useState(false); // 로딩 상태 확인 state
-  const [client, setClient] = useState(null); // client 관련 state
+  const [client, setClient] = useState(null); // client 생성 여부 확인 state
 
+  // #preLoad 함수
+  //  - 앱이 실행될 때 먼저 로드 되야할 것들을 모아놓은 함수
   const preLoad = async () => {
     try {
+      // #font를 preload
       await Font.loadAsync({
-        //font를 preload
-        ...Ionicons.font
+        ...Ionicons.font // Ionicons 가 expose 되는 방식
       });
-      await Asset.loadAsync([require("./assets/instaLogo.jpeg")]); // 이미지 등 prload
 
-      const cache = new InMemoryCache(); // 메모리 캐시 생성
+      // #이미지 등 asset prload
+      await Asset.loadAsync([require("./assets/instaLogo.jpeg")]); //
+
+      // #메모리 캐시 생성 후 persist로 저장 시키기
+      const cache = new InMemoryCache();
       await persistCache({
         cache,
-        storage: AsyncStorage
+        storage: AsyncStorage // 웹의 LocalStorage 같은 것
       });
+
+      // #ApolloClient 생성
       const client = new ApolloClient({
-        // #ApolloClient 환경설정
+        // ApolloClient 환경설정
         //  - https://www.apollographql.com/docs/react/get-started/#configuration-options
         cache,
         ...apolloClientOptions
       });
 
+      // setLoaded, setCliet를 통해 위의 코드들 실행 완료 표시
       setLoaded(true);
       setClient(client);
     } catch (error) {
       console.log(error);
     }
   };
+
   useEffect(() => {
     preLoad();
   }, []);
+
   return loaded && client ? (
     <ApolloProvider client={client}>
       <View>
