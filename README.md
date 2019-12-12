@@ -1,4 +1,4 @@
-#Prismagram ios & android App
+# Prismagram ios & android App
 
 Screens:
 - [ ] Home
