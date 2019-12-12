@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Ionicons } from "@expo/vector-icons";
-import { Text, View, AsyncStorage } from "react-native";
+import { Text, View, AsyncStorage, TouchableOpacity } from "react-native";
 import { AppLoading } from "expo"; // 로딩 작업을 실시하는 컴포넌트
 import * as Font from "expo-font";
 import { Asset } from "expo-asset";
@@ -51,7 +51,7 @@ export default function App() {
 
       // #로그인 여부 설정
       const isLoggedIn = await AsyncStorage.getItem("isLoggedIn"); //AsyncStorage 에서 해당 값 가져오기
-      if (isLoggedIn === null || isLoggedIn === false) {
+      if (isLoggedIn === null || isLoggedIn === "false") {
         setisLoggedIn(false);
       } else {
         setisLoggedIn(true);
@@ -69,14 +69,40 @@ export default function App() {
     preLoad();
   }, []);
 
+  const logUserIn = async () => {
+    console.log("in");
+    try {
+      await AsyncStorage.setItem("isLoggedIn", "true"); //key value 모두 string
+      setisLoggedIn(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const logUserOut = async () => {
+    console.log("out");
+    try {
+      await AsyncStorage.setItem("isLoggedIn", "false"); //key value 모두 string
+      setisLoggedIn(true);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return loaded && client && isLoggedIn !== null ? (
     <ApolloProvider client={client}>
       <ThemeProvider theme={styles}>
-        <View>
+        <View
+          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+        >
           {isLoggedIn === true ? (
-            <Text>로그인 했다.</Text>
+            <TouchableOpacity onPress={logUserIn}>
+              <Text>로그인 했다.</Text>
+            </TouchableOpacity>
           ) : (
-            <Text>로그아웃 했다.</Text>
+            <TouchableOpacity onPress={logUserOut}>
+              <Text>로그아웃 했다.</Text>
+            </TouchableOpacity>
           )}
         </View>
       </ThemeProvider>
