@@ -18,6 +18,7 @@ import { AuthProvider } from "./AuthContext";
 export default function App() {
   const [loaded, setLoaded] = useState(false); // 로딩 상태 확인 state
   const [client, setClient] = useState(null); // client 생성 여부 확인 state
+  const [isLoggedIn, setIsLoggedIn] = useState(null);
 
   // #preLoad 함수
   //  - 앱이 실행될 때 먼저 로드 되야할 것들을 모아놓은 함수
@@ -46,13 +47,13 @@ export default function App() {
         ...apolloClientOptions
       });
 
-      // // #로그인 여부 설정
-      // const isLoggedIn = await AsyncStorage.getItem("isLoggedIn"); //AsyncStorage 에서 해당 값 가져오기
-      // if (isLoggedIn === null || isLoggedIn === "false") {
-      //   setisLoggedIn(false);
-      // } else {
-      //   setisLoggedIn(true);
-      // }
+      // #로그인 여부 설정
+      const isLoggedIn = await AsyncStorage.getItem("isLoggedIn"); //AsyncStorage 에서 해당 값 가져오기
+      if (isLoggedIn === null || isLoggedIn === "false") {
+        setIsLoggedIn(false);
+      } else {
+        setIsLoggedIn(true);
+      }
 
       // setLoaded, setCliet를 통해 위의 코드들 실행 완료 표시
       setLoaded(true);
@@ -66,10 +67,10 @@ export default function App() {
     preLoad();
   }, []);
 
-  return loaded && client ? (
+  return loaded && client && isLoggedIn !== null ? (
     <ApolloProvider client={client}>
       <ThemeProvider theme={styles}>
-        <AuthProvider>
+        <AuthProvider isLoggedIn={isLoggedIn}>
           <NavController />
         </AuthProvider>
       </ThemeProvider>

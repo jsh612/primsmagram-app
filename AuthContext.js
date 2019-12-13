@@ -9,7 +9,7 @@ export const AuthContext = createContext();
   AuthProvider -> context.provider 컴포넌트 출력
 
  */
-export const AuthProvider = ({ children }) => {
+export const AuthProvider = ({ isLoggedIn: isLoggedInProp, children }) => {
   // #Provider는 context를 구독하는 컴포넌트들에게 context의 변화를 알리는 역할을 합니다.
   // #props.children
   //  모든 컴포넌트에서 props.children를 사용할 수 있습니다.
@@ -18,13 +18,13 @@ export const AuthProvider = ({ children }) => {
   // #로그인, 로그아웃 여부 확인
   // -null: 아직 확인전 , -false: 로그인안됨, -true: 로그인된 상태
   // (null 의 이유: 아직 확인 하지 않은 경우를 포함 시키기 위해)
-  const [isLoggedIn, setisLoggedIn] = useState(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(isLoggedInProp);
 
   const logUserIn = async () => {
     console.log("in");
     try {
       await AsyncStorage.setItem("isLoggedIn", "true"); //key value 모두 string
-      setisLoggedIn(false);
+      setIsLoggedIn(true);
     } catch (error) {
       console.log(error);
     }
@@ -34,7 +34,7 @@ export const AuthProvider = ({ children }) => {
     console.log("out");
     try {
       await AsyncStorage.setItem("isLoggedIn", "false"); //key value 모두 string
-      setisLoggedIn(true);
+      setIsLoggedIn(false);
     } catch (error) {
       console.log(error);
     }
@@ -54,7 +54,7 @@ export const AuthProvider = ({ children }) => {
  */
 export const useIsLoggedIn = () => {
   const { isLoggedIn } = useContext(AuthContext);
-  console.log(isLoggedIn);
+  console.log("isLoggedIn", isLoggedIn);
   return isLoggedIn;
 };
 
