@@ -1,5 +1,4 @@
 import React from "react";
-import { createAppContainer } from "react-navigation";
 import { createBottomTabNavigator } from "react-navigation-tabs";
 import Home from "../screens/Home";
 import Search from "../screens/Search";
@@ -7,7 +6,7 @@ import Notifications from "../screens/Notifications";
 import Profile from "../screens/Profile";
 import { View } from "react-native";
 
-const TabNavigation = createBottomTabNavigator({
+export default createBottomTabNavigator({
   // #route 정하는거랑 비슷
   // #기본 작성
   //  Home : {
@@ -22,14 +21,13 @@ const TabNavigation = createBottomTabNavigator({
     //  - https://reactnavigation.org/docs/en/headers.html#setting-the-header-title
     //  - 함수로 작성시 예시
     //    navigationOptions: () => ({
-    //      tabBarOnPress: () => console.log("add")
+    //      tabBarOnPress: ({navigation}) => navigation.navigate("PhotoNavigation")
     //    })
     navigationOptions: {
-      tabBarOnPress: () => console.log("add")
+      // https://reactnavigation.org/docs/en/material-bottom-tab-navigator.html#tabbaronpress
+      tabBarOnPress: ({ navigation }) => navigation.navigate("PhotoNavigation")
     }
   },
   Notifications,
   Profile
 });
-
-export default createAppContainer(TabNavigation);
