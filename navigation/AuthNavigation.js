@@ -6,6 +6,12 @@ import Confirm from "../screens/Auth/Confirm";
 import AuthHome from "../screens/Auth/AuthHome";
 
 const AuthNavigation = createStackNavigator(
+  // route 정하는거랑 비슷
+  // #기본 작성
+  //  AuthHome : {
+  //    screen: AuthHome
+  //  }
+  //다음은 shortcut
   {
     AuthHome,
     Signup,

@@ -14,6 +14,7 @@ export default ({ navigation }) => (
   // navigation 은 reacr-router-dom 의 route 같은 것이다.
   <View>
     <Text>Auth Home</Text>
+    {/* navigation.navigate(“[라우트이름 or 스크린이름]”) */}
     <TouchableOpacity onPress={() => navigation.navigate("Login")}>
       <Text>Go to Login</Text>
     </TouchableOpacity>
