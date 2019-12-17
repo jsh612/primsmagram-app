@@ -21,7 +21,6 @@ export const AuthProvider = ({ isLoggedIn: isLoggedInProp, children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(isLoggedInProp);
 
   const logUserIn = async () => {
-    console.log("in");
     try {
       await AsyncStorage.setItem("isLoggedIn", "true"); //key value 모두 string
       setIsLoggedIn(true);
@@ -31,7 +30,6 @@ export const AuthProvider = ({ isLoggedIn: isLoggedInProp, children }) => {
   };
 
   const logUserOut = async () => {
-    console.log("out");
     try {
       await AsyncStorage.setItem("isLoggedIn", "false"); //key value 모두 string
       setIsLoggedIn(false);
@@ -54,13 +52,11 @@ export const AuthProvider = ({ isLoggedIn: isLoggedInProp, children }) => {
  */
 export const useIsLoggedIn = () => {
   const { isLoggedIn } = useContext(AuthContext);
-  console.log("isLoggedIn", isLoggedIn);
   return isLoggedIn;
 };
 
 export const useLogIn = () => {
   const { logUserIn } = useContext(AuthContext);
-  console.log("logUserIn", logUserIn);
   return logUserIn;
 };
 
