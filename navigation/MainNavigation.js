@@ -2,12 +2,14 @@ import { createAppContainer } from "react-navigation";
 import { createStackNavigator } from "react-navigation-stack";
 import TabNavigation from "./TabNavigation";
 import PhotoNavigation from "./PhotoNavigation";
+import MessageNavigation from "./MessageNavigation";
 
 const MainNavigation = createStackNavigator(
   {
     // #route 정하는거랑 비슷
     TabNavigation,
-    PhotoNavigation
+    PhotoNavigation,
+    MessageNavigation
   },
   {
     headerMode: "none",

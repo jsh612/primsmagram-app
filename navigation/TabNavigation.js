@@ -5,7 +5,8 @@ import Home from "../screens/Tabs/Home";
 import Search from "../screens/Tabs/Search";
 import Notifications from "../screens/Tabs/Notifications";
 import Profile from "../screens/Tabs/Profile";
-import { View, TouchableOpacity, Text } from "react-native";
+import { View } from "react-native";
+import MessagesLink from "../components/MessagesLink";
 
 const stackFactory = (initialRoute, customConfig) =>
   createStackNavigator({
@@ -16,15 +17,13 @@ const stackFactory = (initialRoute, customConfig) =>
   });
 
 export default createBottomTabNavigator({
-  // #route 정하는거랑 비슷
+  // # route 정하는거랑 비슷
+  // # Tab 에 Stack 넣기
+  //   https://reactnavigation.org/docs/en/tab-based-navigation.html#a-stack-navigator-for-each-tab
   Home: {
     screen: stackFactory(Home, {
       title: "Home",
-      headerRight: (
-        <TouchableOpacity>
-          <Text>Hello</Text>
-        </TouchableOpacity>
-      )
+      headerRight: <MessagesLink />
     })
   },
   Search: {
