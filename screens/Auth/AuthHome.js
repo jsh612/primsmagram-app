@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import { TouchableOpacity } from "react-native";
 import constants from "../../constants";
+import AuthButton from "../../components/AuthButton";
 
 const View = styled.View`
   justify-content: center;
@@ -15,20 +15,6 @@ const Image = styled.Image`
 `;
 
 const Touchable = styled.TouchableOpacity``;
-
-const SingUpBtn = styled.View`
-  background-color: ${props => props.theme.blueColor};
-  padding: 10px;
-  margin: 0px 50px 25px;
-  border-radius: 4px;
-  width: ${constants.width / 2};
-`;
-
-const SingUpBtnText = styled.Text`
-  color: white;
-  text-align: center;
-  font-weight: 600;
-`;
 
 const LoginLink = styled.View``;
 
@@ -44,11 +30,10 @@ export default ({ navigation }) => (
       resizeMode={"contain"}
       source={require("../../assets/instaLogo.jpeg")}
     />
-    <Touchable onPress={() => navigation.navigate("Signup")}>
-      <SingUpBtn>
-        <SingUpBtnText>새로운 계정 생성</SingUpBtnText>
-      </SingUpBtn>
-    </Touchable>
+    <AuthButton
+      text={"새로운 계정 생성"}
+      onPress={() => navigation.navigate("Signup")}
+    />
     <Touchable onPress={() => navigation.navigate("Login")}>
       <LoginLink>
         <LoginLinkText>Log in</LoginLinkText>
