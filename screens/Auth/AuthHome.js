@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { TouchableOpacity } from "react-native";
+import constants from "../../constants";
 
 const View = styled.View`
   justify-content: center;
@@ -8,18 +9,50 @@ const View = styled.View`
   flex: 1;
 `;
 
-const Text = styled.Text``;
+const Image = styled.Image`
+  width: ${constants.width / 2.5};
+  height: ${constants.height / 10};
+`;
+
+const Touchable = styled.TouchableOpacity``;
+
+const SingUpBtn = styled.View`
+  background-color: ${props => props.theme.blueColor};
+  padding: 10px;
+  margin: 0px 50px 25px;
+  border-radius: 4px;
+  width: ${constants.width / 2};
+`;
+
+const SingUpBtnText = styled.Text`
+  color: white;
+  text-align: center;
+  font-weight: 600;
+`;
+
+const LoginLink = styled.View``;
+
+const LoginLinkText = styled.Text`
+  color: ${props => props.theme.blueColor};
+  font-weight: 600;
+`;
 
 export default ({ navigation }) => (
   // navigation 은 reacr-router-dom 의 route 같은 것이다.
   <View>
-    <Text>Auth Home</Text>
-    {/* navigation.navigate(“[라우트이름 or 스크린이름]”) */}
-    <TouchableOpacity onPress={() => navigation.navigate("Login")}>
-      <Text>Go to Login</Text>
-    </TouchableOpacity>
-    <TouchableOpacity onPress={() => navigation.navigate("Signup")}>
-      <Text>Go to Signup</Text>
-    </TouchableOpacity>
+    <Image
+      resizeMode={"contain"}
+      source={require("../../assets/instaLogo.jpeg")}
+    />
+    <Touchable onPress={() => navigation.navigate("Signup")}>
+      <SingUpBtn>
+        <SingUpBtnText>새로운 계정 생성</SingUpBtnText>
+      </SingUpBtn>
+    </Touchable>
+    <Touchable onPress={() => navigation.navigate("Login")}>
+      <LoginLink>
+        <LoginLinkText>Log in</LoginLinkText>
+      </LoginLink>
+    </Touchable>
   </View>
 );

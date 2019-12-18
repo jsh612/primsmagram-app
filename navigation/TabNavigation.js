@@ -41,6 +41,7 @@ export default createBottomTabNavigator({
     //    })
     navigationOptions: {
       // https://reactnavigation.org/docs/en/material-bottom-tab-navigator.html#tabbaronpress
+      // {/* navigation.navigate(“[라우트이름 or 스크린이름]”) */}
       tabBarOnPress: ({ navigation }) => navigation.navigate("PhotoNavigation")
     }
   },
