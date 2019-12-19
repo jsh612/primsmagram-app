@@ -20,9 +20,10 @@ export const AuthProvider = ({ isLoggedIn: isLoggedInProp, children }) => {
   // (null 의 이유: 아직 확인 하지 않은 경우를 포함 시키기 위해)
   const [isLoggedIn, setIsLoggedIn] = useState(isLoggedInProp);
 
-  const logUserIn = async () => {
+  const logUserIn = async token => {
     try {
       await AsyncStorage.setItem("isLoggedIn", "true"); //key value 모두 string
+      await AsyncStorage.setItem("jwt", token);
       setIsLoggedIn(true);
     } catch (error) {
       console.log(error);

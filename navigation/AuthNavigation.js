@@ -13,10 +13,10 @@ const AuthNavigation = createStackNavigator(
   //  }
   //다음은 shortcut
   {
-    AuthHome,
-    Signup,
     Login,
-    Confirm
+    Confirm,
+    AuthHome,
+    Signup
   },
   {
     headerMode: "none"

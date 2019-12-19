@@ -43,11 +43,11 @@ export default ({ navigation }) => {
       } = await requestSecretMutation(); // 출력값 boolean
       if (requestSecret) {
         Alert.alert("당신의 메일함을 확인 해주세요");
-        navigation.navigate("Confirm");
+        navigation.navigate("Confirm", { email: value });
         return;
       } else {
         Alert.alert("해당 계정을 찾을 수 없습니다.");
-        navigation.navigate("Signup");
+        navigation.navigate("Signup", { email: value });
       }
     } catch (error) {
       console.log("Login.js : ", error);
@@ -63,7 +63,7 @@ export default ({ navigation }) => {
           placeholder={"Email"}
           keyboardType={"email-address"}
           returnKeyType="send"
-          onEndEditing={handleLogin}
+          onSubmitEditing={handleLogin}
           autoCorrect={false}
         />
         <AuthButton loading={loading} text={"Log in"} onPress={handleLogin} />
