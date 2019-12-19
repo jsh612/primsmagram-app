@@ -16,7 +16,9 @@ const Image = styled.Image`
 
 const Touchable = styled.TouchableOpacity``;
 
-const LoginLink = styled.View``;
+const LoginLink = styled.View`
+  margin-top: 25px;
+`;
 
 const LoginLinkText = styled.Text`
   color: ${props => props.theme.blueColor};

@@ -23,6 +23,8 @@ export default function App() {
   // #preLoad 함수
   //  - 앱이 실행될 때 먼저 로드 되야할 것들을 모아놓은 함수
   const preLoad = async () => {
+    //강제로 로그아웃 시키기 임시 코드
+    //await AsyncStorage.clear()
     try {
       // #font를 preload
       await Font.loadAsync({

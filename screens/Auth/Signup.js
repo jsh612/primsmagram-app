@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { TouchableWithoutFeedback, Keyboard } from "react-native";
 import { useMutation } from "@apollo/react-hooks";
+import * as Facebook from "expo-facebook";
 import AuthButton from "../../components/AuthButton";
 import AuthInput from "../../components/AuthInput";
 import useInput from "../../hooks/useInput";
@@ -14,7 +15,13 @@ const View = styled.View`
   flex: 1;
 `;
 
-const Text = styled.Text``;
+const FBContainer = styled.View`
+  margin-top: 25px;
+  padding-top: 25px;
+  border-top-width: 1px;
+  border-color: ${props => props.theme.lightGreyColor};
+  border-style: solid;
+`;
 
 export default ({ navigation }) => {
   const fNameInput = useInput("");
@@ -68,38 +75,69 @@ export default ({ navigation }) => {
       setLoading(false);
     }
   };
+
+  const fbLogin = async () => {
+    try {
+      await Facebook.initializeAsync("2437846576444335");
+      const { type, token } = await Facebook.logInWithReadPermissionsAsync({
+        permissions: ["public_profile"]
+      });
+      if (type === "success") {
+        // Get the user's name using Facebook's Graph API
+        const response = await fetch(
+          `https://graph.facebook.com/me?access_token=${token}`
+        );
+        Alert.alert("Logged in!", `Hi ${(await response.json()).name}!`);
+      } else {
+        // type === 'cancel'
+      }
+    } catch ({ message }) {
+      alert(`Facebook Login Error: ${message}`);
+    }
+  };
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <View>
-        <AuthInput
-          {...fNameInput}
-          placeholder={"First name"}
-          autoCorrect={false}
-        />
-        <AuthInput
-          {...lNameInput}
-          placeholder={"Last name"}
-          autoCorrect={false}
-        />
-        <AuthInput
-          {...emailInput}
-          placeholder={"Email"}
-          keyboardType={"email-address"}
-          returnKeyType="send"
-          autoCorrect={false}
-        />
-        <AuthInput
-          {...usernameInput}
-          placeholder={"Username"}
-          returnKeyType="send"
-          autoCorrect={false}
-        />
-        <AuthButton
-          loading={loading}
-          text={"가입하기"}
-          onPress={handleSignup}
-        />
-      </View>
+      <>
+        <View>
+          <AuthInput
+            {...fNameInput}
+            placeholder={"First name"}
+            autoCorrect={false}
+          />
+          <AuthInput
+            {...lNameInput}
+            placeholder={"Last name"}
+            autoCorrect={false}
+          />
+          <AuthInput
+            {...emailInput}
+            placeholder={"Email"}
+            keyboardType={"email-address"}
+            returnKeyType="send"
+            autoCorrect={false}
+          />
+          <AuthInput
+            {...usernameInput}
+            placeholder={"Username"}
+            returnKeyType="send"
+            autoCorrect={false}
+          />
+          <AuthButton
+            loading={loading}
+            text={"가입하기"}
+            onPress={handleSignup}
+          />
+          <FBContainer>
+            <AuthButton
+              loading={false}
+              text={"페이스북 연동"}
+              onPress={fbLogin}
+              bgColor={"#2D4DA7"}
+            />
+          </FBContainer>
+        </View>
+      </>
     </TouchableWithoutFeedback>
   );
 };
