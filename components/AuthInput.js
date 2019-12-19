@@ -2,7 +2,6 @@ import React from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 import constants from "../constants";
-import { Alert } from "react-native";
 
 const Container = styled.View`
   margin-bottom: 10px;
