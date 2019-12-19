@@ -22,7 +22,7 @@ const AuthInput = ({
   autoCapitalize = "none",
   onChange,
   returnKeyType = "done", // returnKeyType --> 폰 키보드에서 return의 타입
-  onEndEditing = () => null, // 작성이 완료 되어서 제출시 이벤트
+  onSubmitEditing = () => null, // 작성이 완료 되어서 제출시 이벤트
   autoCorrect = true
 }) => (
   <Container>
@@ -33,7 +33,7 @@ const AuthInput = ({
       onChangeText={onChange}
       keyboardType={keyboardType}
       returnKeyType={returnKeyType}
-      onEndEditing={onEndEditing}
+      onSubmitEditing={onSubmitEditing}
       autoCorrect={autoCorrect}
     ></TextInput>
   </Container>
@@ -53,7 +53,7 @@ AuthInput.propTypes = {
   autoCapitalize: PropTypes.oneOf(["none", "sentences", "words", "characters"]),
   onChange: PropTypes.func.isRequired,
   returnKeyType: PropTypes.oneOf(["done", "go", "next", "search", "send"]),
-  onEndEditing: PropTypes.func,
+  onSubmitEditing: PropTypes.func,
   autoCorrect: PropTypes.bool
 };
 
