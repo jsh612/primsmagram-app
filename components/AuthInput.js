@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 import constants from "../constants";
+import { Alert } from "react-native";
 
 const Container = styled.View`
   margin-bottom: 10px;
@@ -20,15 +21,21 @@ const AuthInput = ({
   value,
   keyboardType = "default",
   autoCapitalize = "none",
-  onChange
+  onChange,
+  returnKeyType = "done", // returnKeyType --> 폰 키보드에서 return의 타입
+  onEndEditing = () => null, // 작성이 완료 되어서 제출시 이벤트
+  autoCorrect = true
 }) => (
   <Container>
     <TextInput
-      onChangeText={onChange}
-      keyboardType={keyboardType}
       placeholder={placeholder}
       value={value}
       autoCapitalize={autoCapitalize}
+      onChangeText={onChange}
+      keyboardType={keyboardType}
+      returnKeyType={returnKeyType}
+      onEndEditing={onEndEditing}
+      autoCorrect={autoCorrect}
     ></TextInput>
   </Container>
 );
@@ -45,7 +52,10 @@ AuthInput.propTypes = {
     "phone-pad"
   ]),
   autoCapitalize: PropTypes.oneOf(["none", "sentences", "words", "characters"]),
-  onChange: PropTypes.func.isRequired
+  onChange: PropTypes.func.isRequired,
+  returnKeyType: PropTypes.oneOf(["done", "go", "next", "search", "send"]),
+  onEndEditing: PropTypes.func,
+  autoCorrect: PropTypes.bool
 };
 
 export default AuthInput;
