@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { TouchableWithoutFeedback, Keyboard } from "react-native";
 import { useMutation } from "@apollo/react-hooks";
 import * as Facebook from "expo-facebook";
+import * as Google from "expo-google-app-auth";
 import AuthButton from "../../components/AuthButton";
 import AuthInput from "../../components/AuthInput";
 import useInput from "../../hooks/useInput";
@@ -21,6 +22,10 @@ const FBContainer = styled.View`
   border-top-width: 1px;
   border-color: ${props => props.theme.lightGreyColor};
   border-style: solid;
+`;
+
+const GoogleContainer = styled.View`
+  margin-top: 20px;
 `;
 
 export default ({ navigation }) => {
@@ -89,11 +94,7 @@ export default ({ navigation }) => {
         );
 
         const { email, first_name, last_name } = await response.json();
-        emailInput.setValue(email);
-        fNameInput.setValue(first_name);
-        lNameInput.setValue(last_name);
-        const [username] = email.split("@");
-        usernameInput.setValue(username);
+        updateFormData(email, first_name, last_name);
         setLoading(false);
       } else {
         // type === 'cancel'
@@ -101,6 +102,39 @@ export default ({ navigation }) => {
     } catch ({ message }) {
       alert(`Facebook Login Error: ${message}`);
     }
+  };
+
+  const googleLogin = async () => {
+    try {
+      const result = await Google.logInAsync({
+        iosClientId:
+          //참조
+          "197992685258-6u0isnpjsrs7dc1il65ec5tn7ts7vm73.apps.googleusercontent.com",
+        scopes: ["profile", "email"]
+      });
+
+      if (result.type === "success") {
+        const user = await fetch("https://www.googleapis.com/userinfo/v2/me", {
+          headers: { Authorization: `Bearer ${result.accessToken}` }
+        });
+        const { email, family_name, given_name } = await user.json();
+        updateFormData(email, given_name, family_name);
+      } else {
+        return { cancelled: true };
+      }
+    } catch (e) {
+      return { error: true };
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const updateFormData = (email, firstName, lastName) => {
+    emailInput.setValue(email);
+    fNameInput.setValue(firstName);
+    lNameInput.setValue(lastName);
+    const [username] = email.split("@");
+    usernameInput.setValue(username);
   };
 
   return (
@@ -143,6 +177,14 @@ export default ({ navigation }) => {
               bgColor={"#2D4DA7"}
             />
           </FBContainer>
+          <GoogleContainer>
+            <AuthButton
+              loading={false}
+              text={"구글 연동"}
+              onPress={googleLogin}
+              bgColor={"#EE1922"}
+            />
+          </GoogleContainer>
         </View>
       </>
     </TouchableWithoutFeedback>
