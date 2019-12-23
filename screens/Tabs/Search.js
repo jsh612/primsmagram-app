@@ -10,30 +10,53 @@ const View = styled.View`
 
 const Text = styled.Text``;
 
+// header-title에서 검색내용 입력시, 화면에 검색 내용 보여주기
 export default class extends React.Component {
+  // 각 screen 마다 navigationOptions 설정을 할 수 있다.
+  // https://reactnavigation.org/docs/en/headers.html
   static navigationOptions = ({ navigation }) => ({
+    //we need class components so we can use 'static'!
+    //따라서 함수 컴포넌트를 사용하지 않고, 클래스 컴포넌트를 사용하는 것이다.
     headerTitle: (
       <SearchBar
-        // static navigat... 이 생성되는 시점에는 state, onChange가 생성되 있지 않아서 오류발생
-        value={this.state.term}
-        onChange={this.onChange}
-        onSubmit={() => null}
+        value={navigation.getParam("term", "")}
+        onChange={navigation.getParam("onChange", () => null)}
+        onSubmit={navigation.getParam("onSubmit", () => null)}
       />
     )
   });
 
-  state = {
-    term: ""
-  };
+  constructor(props) {
+    //constructor는 이 클래스가 처음 만들어질 떄 가장 먼저 실행
+    // 따라서 이를 이용해여 , 정적 메소드(navigationOptions)에서 해당 클래스내의 필요값을 가져 올 수 있다.
+    super(props);
+    const { navigation } = props;
+    this.state = {
+      term: ""
+    };
+    navigation.setParams({
+      term: this.state.term,
+      onChange: this.onChange,
+      onSubmit: this.onSubmit
+    });
+  }
 
   onChange = text => {
+    const { navigation } = this.props;
     this.setState({ term: text });
+    navigation.setParams({
+      term: text
+    });
+  };
+
+  onSubmit = () => {
+    console.log("Submit");
   };
 
   render() {
     return (
       <View>
-        <Text>Search</Text>
+        <Text>Search!!!</Text>
       </View>
     );
   }
