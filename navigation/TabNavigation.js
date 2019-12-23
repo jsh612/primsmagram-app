@@ -77,7 +77,11 @@ export default createBottomTabNavigator(
         tabBarIcon: (
           <NavIcon
             size={26}
-            name={Platform.OS === "ios" ? "ios-add" : "md-add"}
+            name={
+              Platform.OS === "ios"
+                ? "ios-add-circle-outline"
+                : "md-add-circle-outline"
+            }
           />
         )
       }

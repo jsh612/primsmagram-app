@@ -4,9 +4,20 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 import Swiper from "react-native-swiper";
 import { Ionicons } from "@expo/vector-icons";
+import { gql } from "apollo-boost";
 import constants from "../constants";
+import { useMutation } from "@apollo/react-hooks";
+import styles from "../styles";
 
-const Container = styled.View``;
+export const TOGGLE_LIKE = gql`
+  mutation toggelLike($postId: String!) {
+    toggleLike(postId: $postId)
+  }
+`;
+
+const Container = styled.View`
+  margin-bottom: 40px;
+`;
 
 const Header = styled.View`
   padding: 15px;
@@ -61,10 +72,42 @@ const CommentText = styled.Text`
   margin-left: 5px;
 `;
 
-const Post = ({ user, location, files = [], likeCount, caption, comments }) => {
+const Post = ({
+  id,
+  user,
+  location,
+  files = [],
+  likeCount: likeCountProp,
+  caption,
+  comments,
+  isLiked: isLikedProp
+}) => {
   const [commnetView, setCommnetView] = useState(false);
-  const CommentHandler = () => {
+  const [isLiked, setIsLiked] = useState(isLikedProp);
+  const [likeCount, setIsLikeCount] = useState(likeCountProp);
+
+  const handleComment = () => {
     return commnetView ? setCommnetView(false) : setCommnetView(true);
+  };
+
+  const [toggleLikeMutation] = useMutation(TOGGLE_LIKE, {
+    variables: {
+      postId: id
+    }
+  });
+
+  const handleLike = async () => {
+    if (isLiked) {
+      setIsLikeCount(l => l - 1);
+    } else {
+      setIsLikeCount(l => l + 1);
+    }
+    setIsLiked(like => !like);
+    try {
+      await toggleLikeMutation();
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -93,12 +136,19 @@ const Post = ({ user, location, files = [], likeCount, caption, comments }) => {
         ))}
       </Swiper>
       <IconsContainer>
-        <Touchable>
+        <Touchable onPress={handleLike}>
           <IconContainer>
             <Ionicons
               size={28}
+              color={isLiked ? styles.redColor : styles.blackColor}
               name={
-                Platform.OS === "ios" ? "ios-heart-empty" : "md-heart-empty"
+                Platform.OS === "ios"
+                  ? isLiked
+                    ? "ios-heart"
+                    : "ios-heart-empty"
+                  : isLiked
+                  ? "md-heart"
+                  : "md-heart-empty"
               }
             />
           </IconContainer>
@@ -107,6 +157,7 @@ const Post = ({ user, location, files = [], likeCount, caption, comments }) => {
           <IconContainer>
             <Ionicons
               size={28}
+              color={styles.blackColor}
               name={Platform.OS === "ios" ? "ios-text" : "md-text"}
             />
           </IconContainer>
@@ -123,7 +174,7 @@ const Post = ({ user, location, files = [], likeCount, caption, comments }) => {
             <Bold>{user.username}</Bold> {caption}
           </Caption>
         </Touchable>
-        <Touchable onPress={CommentHandler}>
+        <Touchable onPress={handleComment}>
           <CommentCount> 댓글 {comments.length}개 모두 보기</CommentCount>
         </Touchable>
         {comments &&
