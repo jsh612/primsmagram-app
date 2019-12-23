@@ -47,7 +47,6 @@ const Text = styled.Text``;
 export default () => {
   const [refreshing, setRefreshing] = useState(false); //새로고침여부 저장
   const { loading, data, refetch } = useQuery(FEED_QUERY);
-  console.log(data);
 
   const refresh = async () => {
     try {

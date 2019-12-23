@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Image, Platform } from "react-native";
 import PropTypes from "prop-types";
 import styled from "styled-components";
@@ -30,6 +30,7 @@ const Location = styled.Text`
 
 const IconsContainer = styled.View`
   padding: 10px;
+  padding-bottom: 0;
   flex-direction: row;
 `;
 
@@ -37,7 +38,35 @@ const IconContainer = styled.View`
   margin-right: 10px;
 `;
 
-const Post = ({ user, location, files = [] }) => {
+const InfoContainer = styled.View`
+  padding: 5px 10px;
+`;
+
+const Caption = styled.Text`
+  margin: 3px 0px;
+`;
+
+const CommentCount = styled.Text`
+  opacity: 0.5;
+  font-size: 13px;
+  margin: 5px 0;
+  margin-left: -3px;
+`;
+
+const CommentContainer = styled.View`
+  flex-direction: row;
+`;
+
+const CommentText = styled.Text`
+  margin-left: 5px;
+`;
+
+const Post = ({ user, location, files = [], likeCount, caption, comments }) => {
+  const [commnetView, setCommnetView] = useState(false);
+  const CommentHandler = () => {
+    return commnetView ? setCommnetView(false) : setCommnetView(true);
+  };
+
   return (
     <Container>
       <Header>
@@ -83,6 +112,29 @@ const Post = ({ user, location, files = [] }) => {
           </IconContainer>
         </Touchable>
       </IconsContainer>
+      <InfoContainer>
+        <Touchable>
+          <Bold>
+            {likeCount === 1 ? "좋아요 1개" : `좋아요 ${likeCount}개`}
+          </Bold>
+        </Touchable>
+        <Touchable>
+          <Caption>
+            <Bold>{user.username}</Bold> {caption}
+          </Caption>
+        </Touchable>
+        <Touchable onPress={CommentHandler}>
+          <CommentCount> 댓글 {comments.length}개 모두 보기</CommentCount>
+        </Touchable>
+        {comments &&
+          commnetView &&
+          comments.map(comm => (
+            <CommentContainer key={comm.id}>
+              <Bold>{comm.user.username}</Bold>
+              <CommentText>{comm.text}</CommentText>
+            </CommentContainer>
+          ))}
+      </InfoContainer>
     </Container>
   );
 };
