@@ -15,8 +15,6 @@ const View = styled.View`
   flex: 1;
 `;
 
-const Text = styled.Text``;
-
 export default ({ navigation }) => {
   const confirmInput = useInput("");
   const [loading, setLoading] = useState(false);
@@ -40,7 +38,6 @@ export default ({ navigation }) => {
       const {
         data: { confirmSecret }
       } = await confirmSecretMutation();
-      console.log("confirmSecret", confirmSecret);
       if (confirmSecret !== "" || confirmSecret !== false) {
         logIn(confirmSecret);
       } else {

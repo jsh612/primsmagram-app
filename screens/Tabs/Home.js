@@ -16,14 +16,6 @@ const FEED_QUERY = gql`
   ${POST_FRAGMENT}
 `;
 
-const View = styled.View`
-  justify-content: center;
-  align-items: center;
-  flex: 1;
-`;
-
-const Text = styled.Text``;
-
 export default () => {
   const [refreshing, setRefreshing] = useState(false); //새로고침여부 저장
   const { loading, data, refetch } = useQuery(FEED_QUERY);
