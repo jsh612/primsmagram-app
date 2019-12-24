@@ -13,16 +13,29 @@ import { stackStyles } from "./config";
 import Detail from "../screens/Detail";
 
 const stackFactory = (initialRoute, customConfig) =>
-  createStackNavigator({
-    InitialRoute: {
-      screen: initialRoute,
-      navigationOptions: {
-        ...customConfig,
-        headerStyle: { ...stackStyles }
+  createStackNavigator(
+    {
+      InitialRoute: {
+        screen: initialRoute,
+        navigationOptions: {
+          ...customConfig,
+          headerStyle: { ...stackStyles }
+        }
+      },
+      Detail: {
+        screen: Detail,
+        navigationOptions: {
+          headerTintColor: styles.blackColor,
+          title: "Post"
+        }
       }
     },
-    Detail
-  });
+    {
+      defaultNavigationOptions: {
+        headerStyle: { ...stackStyles }
+      }
+    }
+  );
 
 export default createBottomTabNavigator(
   {
@@ -49,7 +62,11 @@ export default createBottomTabNavigator(
       }
     },
     Search: {
-      screen: stackFactory(Search),
+      screen: stackFactory(Search, {
+        // back 버튼 string 없애기
+        // 돌아가는 화면에서 설정 한다.(Detail의 빽버튼은 돌아오는 Search 화면에서 설정)
+        headerBackTitle: null
+      }),
       navigationOptions: {
         tabBarIcon: ({ focused }) => (
           <NavIcon

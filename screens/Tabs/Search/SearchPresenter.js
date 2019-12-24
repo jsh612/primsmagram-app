@@ -32,7 +32,6 @@ const SearchPresenter = ({ term, shouldFetch }) => {
     //:  https://www.apollographql.com/docs/react/api/react-hoc/#graphql-options-for-queries
     fetchPolicy: "network-only"
   });
-  console.log(data, loading);
 
   const onRefresh = async () => {
     try {

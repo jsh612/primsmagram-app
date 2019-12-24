@@ -1,12 +1,33 @@
 import React from "react";
 import styled from "styled-components";
+import { useQuery } from "@apollo/react-hooks";
+import { gql } from "apollo-boost";
+import { POST_FRAGMENT } from "../fragment";
+import Loader from "../components/Loader";
+import Post from "../components/Post";
+import { ScrollView } from "react-native";
 
-const View = styled.View``;
+const POST_DETAIL = gql`
+  query seeFullPost($id: String!) {
+    seeFullPost(postId: $id) {
+      ...PostParts
+    }
+  }
+  ${POST_FRAGMENT}
+`;
 
-const Text = styled.Text``;
-
-export default ({ navigation }) => (
-  <View>
-    <Text>I should fetch for: {navigation.getParam("id")}</Text>
-  </View>
-);
+export default ({ navigation }) => {
+  const { loading, data } = useQuery(POST_DETAIL, {
+    variables: { id: navigation.getParam("id") }
+  });
+  console.log("data:", data);
+  return (
+    <ScrollView>
+      {loading ? (
+        <Loader />
+      ) : (
+        data && data.seeFullPost && <Post {...data.seeFullPost} />
+      )}
+    </ScrollView>
+  );
+};
