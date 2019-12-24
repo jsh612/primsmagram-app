@@ -10,7 +10,8 @@ import MessagesLink from "../components/MessagesLink";
 import NavIcon from "../components/NavIcon";
 import styles from "../styles";
 import { stackStyles } from "./config";
-import Detail from "../screens/Detail";
+import Detail from "../screens/PostDetail";
+import UserDetail from "../screens/UserDetail";
 
 const stackFactory = (initialRoute, customConfig) =>
   createStackNavigator(
@@ -28,10 +29,18 @@ const stackFactory = (initialRoute, customConfig) =>
           headerTintColor: styles.blackColor,
           title: "Post"
         }
+      },
+      UserDetail: {
+        screen: UserDetail,
+        navigationOptions: {
+          title: "User"
+        }
       }
     },
     {
       defaultNavigationOptions: {
+        headerBackTitle: null,
+        headerTintColor: styles.blackColor,
         headerStyle: { ...stackStyles }
       }
     }

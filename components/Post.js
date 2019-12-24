@@ -7,6 +7,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { gql } from "apollo-boost";
 import constants from "../constants";
 import { useMutation } from "@apollo/react-hooks";
+import { withNavigation } from "react-navigation";
 import styles from "../styles";
 
 export const TOGGLE_LIKE = gql`
@@ -80,7 +81,8 @@ const Post = ({
   likeCount: likeCountProp,
   caption,
   comments,
-  isLiked: isLikedProp
+  isLiked: isLikedProp,
+  navigation
 }) => {
   const [commnetView, setCommnetView] = useState(false);
   const [isLiked, setIsLiked] = useState(isLikedProp);
@@ -113,13 +115,21 @@ const Post = ({
   return (
     <Container>
       <Header>
-        <Touchable>
+        <Touchable
+          onPress={() =>
+            navigation.navigate("UserDetail", { username: user.username })
+          }
+        >
           <Image
             source={{ uri: user.avatar }}
             style={{ height: 40, width: 40, borderRadius: 20 }}
           />
         </Touchable>
-        <Touchable>
+        <Touchable
+          onPress={() =>
+            navigation.navigate("UserDetail", { username: user.username })
+          }
+        >
           <HeaderUserContainer>
             <Bold>{user.username}</Bold>
             <Location>{location}</Location>
@@ -220,4 +230,4 @@ Post.propTypes = {
   createdAt: PropTypes.string.isRequired
 };
 
-export default Post;
+export default withNavigation(Post);
