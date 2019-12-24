@@ -3,12 +3,16 @@ import { ScrollView, RefreshControl } from "react-native";
 import PropTypes from "prop-types";
 import { gql } from "apollo-boost";
 import { useQuery } from "@apollo/react-hooks";
+import Loader from "../../../components/Loader";
+import SquarePhoto from "../../../components/SquarePhoto";
+import Post from "../../../components/Post";
 
 export const SEARCH = gql`
   query search($term: String!) {
     searchPost(term: $term) {
       id
       files {
+        id
         url
       }
       likeCount
@@ -23,7 +27,10 @@ const SearchPresenter = ({ term, shouldFetch }) => {
     variables: {
       term
     },
-    skip: !shouldFetch // shoudeFetch가 true 경우에만 실행시킨다.
+    skip: !shouldFetch, // shoudeFetch가 true 경우에만 실행시킨다.
+    //# fetchPolicy
+    //:  https://www.apollographql.com/docs/react/api/react-hoc/#graphql-options-for-queries
+    fetchPolicy: "network-only"
   });
   console.log(data, loading);
 
@@ -46,7 +53,15 @@ const SearchPresenter = ({ term, shouldFetch }) => {
       refreshControl={
         <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
       }
-    />
+    >
+      {loading ? (
+        <Loader />
+      ) : (
+        data &&
+        data.searchPost &&
+        data.searchPost.map(post => <SquarePhoto key={post.id} {...post} />)
+      )}
+    </ScrollView>
   );
 };
 
