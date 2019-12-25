@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import * as MediaLibrary from "expo-media-library";
 import * as Permissions from "expo-permissions";
-import { ScrollView } from "react-native";
+import { ScrollView, RefreshControl } from "react-native";
 import Loader from "../../components/Loader";
 import constants from "../../constants";
 import { TouchableOpacity } from "react-native-gesture-handler";
@@ -22,6 +22,7 @@ export default () => {
   const [hasPermissions, setHasPermissions] = useState(false);
   const [seleted, setSelected] = useState();
   const [allPhotos, setAllPhotos] = useState();
+  const [refreshing, setRefreshing] = useState(false);
 
   const changeSelected = photo => {
     setSelected(photo);
@@ -56,6 +57,11 @@ export default () => {
     }
   };
 
+  const refresh = () => {
+    setRefreshing(true);
+    setTimeout(() => setRefreshing(false), 1000);
+  };
+
   useEffect(() => {
     askPermission();
   }, []);
@@ -81,6 +87,9 @@ export default () => {
                   flexWrap: "wrap",
                   justifyContent: "space-between"
                 }}
+                refreshControl={
+                  <RefreshControl refreshing={refreshing} onRefresh={refresh} />
+                }
               >
                 {allPhotos.map(photo => (
                   <TouchableOpacity
