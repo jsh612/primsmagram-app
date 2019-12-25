@@ -152,7 +152,6 @@ export default createBottomTabNavigator(
     }
   },
   {
-    initialRouteName: "Profile", //작업할 때 편하기 위해 일시적으로 설정 해둠
     tabBarOptions: {
       showLabel: false,
       style: {

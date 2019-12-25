@@ -8,8 +8,8 @@ import { stackStyles } from "./config";
 const MainNavigation = createStackNavigator(
   {
     // #route 정하는거랑 비슷
-    TabNavigation,
     PhotoNavigation,
+    TabNavigation,
     MessageNavigation
   },
   {
