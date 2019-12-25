@@ -45,7 +45,6 @@ export default () => {
     //사진첩에 대한 권한 얻기
     try {
       const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
-      console.log("status:", status);
       if (status === "granted") {
         setHasPermissions(true);
         // 권한을 얻은 후, 사진 가져오기
