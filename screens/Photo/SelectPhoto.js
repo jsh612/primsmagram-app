@@ -2,8 +2,10 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import * as MediaLibrary from "expo-media-library";
 import * as Permissions from "expo-permissions";
-import { Image } from "react-native";
+import { ScrollView } from "react-native";
 import Loader from "../../components/Loader";
+import constants from "../../constants";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 const View = styled.View`
   justify-content: center;
@@ -11,18 +13,26 @@ const View = styled.View`
   flex: 1;
 `;
 
+const Image = styled.Image`
+  margin: 1px;
+`;
+
 export default () => {
   const [loading, setLoading] = useState(true);
   const [hasPermissions, setHasPermissions] = useState(false);
-  const [seleted, setSeleted] = useState();
+  const [seleted, setSelected] = useState();
   const [allPhotos, setAllPhotos] = useState();
+
+  const changeSelected = photo => {
+    setSelected(photo);
+  };
 
   const getPhotos = async () => {
     // 권한 얻은 후, 사진첩에서 사진 가져오기
     try {
       const { assets } = await MediaLibrary.getAssetsAsync();
       const [firstPhoto] = assets;
-      setSeleted(firstPhoto);
+      setSelected(firstPhoto);
       setAllPhotos(assets);
     } catch (error) {
       console.log(error);
@@ -58,10 +68,38 @@ export default () => {
       ) : (
         <View>
           {hasPermissions ? (
-            <Image
-              source={{ uri: seleted.uri }}
-              style={{ width: 100, height: 100 }}
-            />
+            <>
+              <Image
+                source={{ uri: seleted.uri }}
+                style={{
+                  width: constants.width,
+                  height: constants.height / 2.5
+                }}
+              />
+              <ScrollView
+                contentContainerStyle={{
+                  flexDirection: "row",
+                  flexWrap: "wrap",
+                  justifyContent: "space-between"
+                }}
+              >
+                {allPhotos.map(photo => (
+                  <TouchableOpacity
+                    key={photo.id}
+                    onPress={() => changeSelected(photo)}
+                  >
+                    <Image
+                      source={{ uri: photo.uri }}
+                      style={{
+                        width: constants.width / 3.05,
+                        height: constants.height / 6,
+                        opacity: photo.id === seleted.id ? 0.5 : 1
+                      }}
+                    />
+                  </TouchableOpacity>
+                ))}
+              </ScrollView>
+            </>
           ) : null}
         </View>
       )}
