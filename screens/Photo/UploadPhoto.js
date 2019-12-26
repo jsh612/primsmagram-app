@@ -2,9 +2,22 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { Image, ActivityIndicator, Alert } from "react-native";
 import axios from "axios";
+import { gql } from "apollo-boost";
 import styles from "../../styles";
 import constants from "../../constants";
 import useInput from "../../hooks/useInput";
+import { useMutation } from "@apollo/react-hooks";
+import { FEED_QUERY } from "../Tabs/Home";
+
+const UPLOAD = gql`
+  mutation upload($caption: String!, $files: [String!]!, $location: String!) {
+    upload(caption: $caption, files: $files, location: $location) {
+      id
+      caption
+      location
+    }
+  }
+`;
 
 const View = styled.View`
   flex: 1;
@@ -42,12 +55,15 @@ const Text = styled.Text`
 
 export default ({ navigation }) => {
   const [loading, setIsLoading] = useState(false);
-  const [fileUrl, setFileUrl] = useState("");
 
   const captionInput = useInput("");
   const locationInput = useInput("");
 
   const photo = navigation.getParam("photo");
+
+  const [uploadMutation] = useMutation(UPLOAD, {
+    refetchQueries: () => [{ query: FEED_QUERY }]
+  });
 
   const handleSubmit = async () => {
     if (captionInput.value === "" || locationInput.value === "") {
@@ -67,6 +83,7 @@ export default ({ navigation }) => {
     });
 
     try {
+      setIsLoading(true);
       const {
         data: { location }
       } = await axios.post("http://localhost:4000/api/upload", formData, {
@@ -74,9 +91,25 @@ export default ({ navigation }) => {
           "content-type": "multipart/form-data"
         }
       });
-      setFileUrl(location);
+
+      console.log("location:::", location);
+
+      const {
+        data: { upload }
+      } = await uploadMutation({
+        variables: {
+          files: [location],
+          caption: captionInput.value,
+          location: locationInput.value
+        }
+      });
+      if (upload.id) {
+        navigation.navigate("TabNavigation");
+      }
     } catch (error) {
       Alert.alert("업로드 불가", "다시 시도해주세요");
+    } finally {
+      setIsLoading(false);
     }
   };
 

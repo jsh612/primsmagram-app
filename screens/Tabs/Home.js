@@ -7,7 +7,8 @@ import Loader from "../../components/Loader";
 import Post from "../../components/Post";
 import { POST_FRAGMENT } from "../../fragment";
 
-const FEED_QUERY = gql`
+//uploadPhoto.js에서 밑의 쿼리 재사용
+export const FEED_QUERY = gql`
   {
     seeFeed {
       ...PostParts
