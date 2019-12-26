@@ -44,8 +44,8 @@ export default ({ navigation }) => {
   const [loading, setIsLoading] = useState(false);
   const [fileUrl, setFileUrl] = useState("");
 
-  const captionInput = useInput("test-caption");
-  const locationInput = useInput("test-location");
+  const captionInput = useInput("");
+  const locationInput = useInput("");
 
   const photo = navigation.getParam("photo");
 
@@ -60,7 +60,6 @@ export default ({ navigation }) => {
     const formData = new FormData();
     const name = photo.filename;
     const [, type] = name.split(".");
-
     formData.append("file", {
       name,
       type: type.toLowerCase(),
@@ -69,14 +68,13 @@ export default ({ navigation }) => {
 
     try {
       const {
-        data: { path }
+        data: { location }
       } = await axios.post("http://localhost:4000/api/upload", formData, {
         headers: {
           "content-type": "multipart/form-data"
         }
       });
-      console.log(path);
-      setFileUrl(path);
+      setFileUrl(location);
     } catch (error) {
       Alert.alert("업로드 불가", "다시 시도해주세요");
     }
