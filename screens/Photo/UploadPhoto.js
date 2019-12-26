@@ -9,8 +9,8 @@ const View = styled.View`
 
 const Text = styled.Text``;
 
-export default () => (
+export default ({ navigation }) => (
   <View>
-    <Text>Upload</Text>
+    <Text>사진 : {navigation.getParam("photo").uri}</Text>
   </View>
 );

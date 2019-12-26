@@ -48,14 +48,20 @@ export default createStackNavigator(
         title: "사진 선택"
       }
     },
-    UploadPhoto
+    Upload: {
+      screen: UploadPhoto,
+      navigationOptions: {
+        title: "Upload"
+      }
+    }
   },
   {
     defaultNavigationOptions: {
       headerStyle: {
         ...stackStyles
       },
-      headerBackTitle: null
+      headerBackTitle: null,
+      headerTintColor: styles.blackColor
     }
   }
 );

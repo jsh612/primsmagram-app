@@ -6,6 +6,7 @@ import { ScrollView, RefreshControl } from "react-native";
 import Loader from "../../components/Loader";
 import constants from "../../constants";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import styles from "../../styles";
 
 const View = styled.View`
   justify-content: center;
@@ -17,7 +18,24 @@ const Image = styled.Image`
   margin: 1px;
 `;
 
-export default () => {
+const Button = styled.TouchableOpacity`
+  width: 100px;
+  height: 30px;
+  position: absolute;
+  right: 5px;
+  top: 15px;
+  background-color: ${styles.blueColor};
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+`;
+
+const Text = styled.Text`
+  color: white;
+  font-weight: 600;
+`;
+
+export default ({ navigation }) => {
   const [loading, setLoading] = useState(true);
   const [hasPermissions, setHasPermissions] = useState(false);
   const [seleted, setSelected] = useState();
@@ -62,6 +80,10 @@ export default () => {
     setTimeout(() => setRefreshing(false), 1000);
   };
 
+  const handleSelected = () => {
+    navigation.navigate("Upload", { photo: seleted });
+  };
+
   useEffect(() => {
     askPermission();
   }, []);
@@ -81,6 +103,9 @@ export default () => {
                   height: constants.height / 2.5
                 }}
               />
+              <Button onPress={handleSelected}>
+                <Text>업로드</Text>
+              </Button>
               <ScrollView
                 contentContainerStyle={{
                   flexDirection: "row",

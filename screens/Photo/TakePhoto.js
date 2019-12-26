@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { Camera } from "expo-camera";
 import { Ionicons } from "@expo/vector-icons";
 import * as MediaLibrary from "expo-media-library";
+import * as Permissions from "expo-permissions";
 import Loader from "../../components/Loader";
 import constants from "../../constants";
 import styles from "../../styles";
@@ -36,13 +37,17 @@ export default ({ navigation }) => {
   const askPermission = async () => {
     // 카메라 접근 권한 받기
     try {
-      const { status } = await Camera.requestPermissionsAsync();
+      // const { status } = await Camera.requestPermissionsAsync();
+      const { status } = await Permissions.askAsync(Permissions.CAMERA);
+      console.log(status);
       if (status === "granted") {
         setHasPermisson(true);
       }
     } catch (error) {
       console.log(error);
       setHasPermisson(false);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -65,7 +70,7 @@ export default ({ navigation }) => {
         quality: 1
       });
       const asset = await MediaLibrary.createAssetAsync(uri);
-      console.log("사진 저장 asset", asset);
+      navigation.navigate("Upload", { photo: asset });
     } catch (error) {
       console.log(error);
     } finally {
