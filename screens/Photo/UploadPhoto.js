@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { Image, ActivityIndicator, Alert } from "react-native";
+import axios from "axios";
 import styles from "../../styles";
 import constants from "../../constants";
 import useInput from "../../hooks/useInput";
@@ -43,12 +44,41 @@ export default ({ navigation }) => {
   const [loading, setIsLoading] = useState(false);
   const [fileUrl, setFileUrl] = useState("");
 
-  const captionInput = useInput("");
-  const locationInput = useInput("");
+  const captionInput = useInput("test-caption");
+  const locationInput = useInput("test-location");
+
+  const photo = navigation.getParam("photo");
 
   const handleSubmit = async () => {
     if (captionInput.value === "" || locationInput.value === "") {
       Alert.alert("All fields are required");
+    }
+
+    // # FormData
+    //  - HTML form 태그 처럼 작동
+    //  - 사진을 백엔드가 이해할 수 있는 형태로 변환
+    const formData = new FormData();
+    const name = photo.filename;
+    const [, type] = name.split(".");
+
+    formData.append("file", {
+      name,
+      type: type.toLowerCase(),
+      uri: photo.uri
+    });
+
+    try {
+      const {
+        data: { path }
+      } = await axios.post("http://localhost:4000/api/upload", formData, {
+        headers: {
+          "content-type": "multipart/form-data"
+        }
+      });
+      console.log(path);
+      setFileUrl(path);
+    } catch (error) {
+      Alert.alert("업로드 불가", "다시 시도해주세요");
     }
   };
 
@@ -56,7 +86,7 @@ export default ({ navigation }) => {
     <View>
       <Container>
         <Image
-          source={{ uri: navigation.getParam("photo").uri }}
+          source={{ uri: photo.uri }}
           style={{ height: 80, width: 80, marginRight: 30 }}
         />
         <Form>
