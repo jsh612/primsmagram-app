@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { gql } from "apollo-boost";
-import { ScrollView } from "react-native";
+import { ScrollView, RefreshControl } from "react-native";
 import { USER_FRAGMENT } from "../../fragment";
 import { useQuery } from "@apollo/react-hooks";
 import Loader from "../../components/Loader";
@@ -17,10 +17,26 @@ export const ME = gql`
 `;
 
 export default ({ navigation }) => {
-  const { loading, data } = useQuery(ME);
-  console.log("me::", data);
+  const [refreshing, setRefreshing] = useState(false); //새로고침여부 저장
+  const { loading, data, refetch } = useQuery(ME);
+
+  const refresh = async () => {
+    try {
+      setRefreshing(true);
+      await refetch();
+    } catch (e) {
+      console.log(e);
+    } finally {
+      setRefreshing(false);
+    }
+  };
+
   return (
-    <ScrollView>
+    <ScrollView
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={refresh} />
+      }
+    >
       {loading ? <Loader /> : data && data.me && <UserProfile {...data.me} />}
     </ScrollView>
   );
