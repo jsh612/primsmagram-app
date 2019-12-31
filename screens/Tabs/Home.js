@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { gql } from "apollo-boost";
 import { useQuery } from "@apollo/react-hooks";
@@ -31,6 +31,10 @@ export default () => {
       setRefreshing(false);
     }
   };
+
+  useEffect(() => {
+    refetch();
+  });
 
   return (
     <ScrollView

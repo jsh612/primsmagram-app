@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { gql } from "apollo-boost";
 import { ScrollView, RefreshControl } from "react-native";
@@ -20,7 +20,6 @@ export default ({ navigation }) => {
   const [refreshing, setRefreshing] = useState(false); //새로고침여부 저장
   const [okMe, setMe] = useState(true); // "나" 인지 여부
   const { loading, data, refetch } = useQuery(ME);
-  console.log("확인", okMe);
   const refresh = async () => {
     try {
       setRefreshing(true);
@@ -31,6 +30,10 @@ export default ({ navigation }) => {
       setRefreshing(false);
     }
   };
+
+  useEffect(() => {
+    refetch();
+  });
 
   return (
     <ScrollView

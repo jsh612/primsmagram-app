@@ -88,7 +88,6 @@ const UserProfile = ({
   posts,
   okMe
 }) => {
-  console.log("나인지여부", okMe);
   const [isGrid, setIsGrid] = useState(true);
   const toggleGrid = () => setIsGrid(true);
   const toggleList = () => setIsGrid(false);
