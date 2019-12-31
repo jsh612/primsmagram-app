@@ -8,6 +8,7 @@ import styles from "../styles";
 import constants from "../constants";
 import SquarePhoto from "./SquarePhoto";
 import Post from "./Post";
+import { useLogOut } from "../AuthContext";
 
 const ProfileHeader = styled.View`
   padding: 20px;
@@ -63,6 +64,20 @@ const SquareContainer = styled.View`
   flex-wrap: wrap;
 `;
 
+const Logout = styled.TouchableOpacity`
+  background-color: ${styles.blueColor};
+  width: 80px;
+  height: 20px;
+  margin-top: -20px;
+  align-items: center;
+  justify-content: center;
+`;
+
+const LogoutText = styled.Text`
+  color: white;
+  font-weight: 800;
+`;
+
 const UserProfile = ({
   avatar,
   postsCount,
@@ -70,11 +85,14 @@ const UserProfile = ({
   followingCount,
   bio,
   fullName,
-  posts
+  posts,
+  okMe
 }) => {
+  console.log("나인지여부", okMe);
   const [isGrid, setIsGrid] = useState(true);
   const toggleGrid = () => setIsGrid(true);
   const toggleList = () => setIsGrid(false);
+  const logOut = useLogOut();
   return (
     <View>
       <ProfileHeader>
@@ -100,6 +118,11 @@ const UserProfile = ({
         </HeaderColumn>
       </ProfileHeader>
       <ProfileMeta>
+        {okMe && (
+          <Logout onPress={logOut}>
+            <LogoutText>로그아웃</LogoutText>
+          </Logout>
+        )}
         <Bold>{fullName}</Bold>
         <Bio>{bio}</Bio>
       </ProfileMeta>

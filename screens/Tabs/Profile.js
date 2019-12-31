@@ -18,8 +18,9 @@ export const ME = gql`
 
 export default ({ navigation }) => {
   const [refreshing, setRefreshing] = useState(false); //새로고침여부 저장
+  const [okMe, setMe] = useState(true); // "나" 인지 여부
   const { loading, data, refetch } = useQuery(ME);
-
+  console.log("확인", okMe);
   const refresh = async () => {
     try {
       setRefreshing(true);
@@ -37,7 +38,11 @@ export default ({ navigation }) => {
         <RefreshControl refreshing={refreshing} onRefresh={refresh} />
       }
     >
-      {loading ? <Loader /> : data && data.me && <UserProfile {...data.me} />}
+      {loading ? (
+        <Loader />
+      ) : (
+        data && data.me && <UserProfile okMe={okMe} {...data.me} />
+      )}
     </ScrollView>
   );
 };
