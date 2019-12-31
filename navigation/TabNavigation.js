@@ -12,6 +12,7 @@ import styles from "../styles";
 import { stackStyles } from "./config";
 import Detail from "../screens/PostDetail";
 import UserDetail from "../screens/UserDetail";
+import Comment from "../screens/Tabs/Comment";
 
 const stackFactory = (initialRoute, customConfig) =>
   createStackNavigator(
@@ -35,6 +36,13 @@ const stackFactory = (initialRoute, customConfig) =>
         navigationOptions: ({ navigation }) => ({
           title: navigation.getParam("username")
         })
+      },
+      Comment: {
+        screen: Comment,
+        navigationOptions: {
+          headerTintColor: styles.blackColor,
+          title: "댓글 작성"
+        }
       }
     },
     {

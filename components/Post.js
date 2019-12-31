@@ -112,6 +112,11 @@ const Post = ({
     }
   };
 
+  const WriteComment = () => {
+    console.log(":::::::", comments);
+    navigation.navigate("Comment", { comm: comments, postId: id });
+  };
+
   return (
     <Container>
       <Header>
@@ -163,7 +168,7 @@ const Post = ({
             />
           </IconContainer>
         </Touchable>
-        <Touchable>
+        <Touchable onPress={WriteComment}>
           <IconContainer>
             <Ionicons
               size={28}
