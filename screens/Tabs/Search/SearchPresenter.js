@@ -5,7 +5,8 @@ import { gql } from "apollo-boost";
 import { useQuery } from "@apollo/react-hooks";
 import Loader from "../../../components/Loader";
 import SquarePhoto from "../../../components/SquarePhoto";
-import Post from "../../../components/Post";
+import styled from "styled-components";
+import constants from "../../../constants";
 
 export const SEARCH = gql`
   query search($term: String!) {
@@ -19,6 +20,12 @@ export const SEARCH = gql`
       commentCount
     }
   }
+`;
+
+const Container = styled.View`
+  flex-direction: row;
+  flex: 1;
+  flex-wrap: wrap;
 `;
 
 const SearchPresenter = ({ term, shouldFetch }) => {
@@ -56,9 +63,17 @@ const SearchPresenter = ({ term, shouldFetch }) => {
       {loading ? (
         <Loader />
       ) : (
-        data &&
-        data.searchPost &&
-        data.searchPost.map(post => <SquarePhoto key={post.id} {...post} />)
+        <Container>
+          {data &&
+            data.searchPost &&
+            data.searchPost.map(post => (
+              <SquarePhoto
+                key={post.id}
+                style={{ width: constants.width / 3 }}
+                {...post}
+              />
+            ))}
+        </Container>
       )}
     </ScrollView>
   );

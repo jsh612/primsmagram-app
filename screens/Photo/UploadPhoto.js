@@ -61,7 +61,6 @@ export default ({ navigation }) => {
   const locationInput = useInput("");
 
   const photo = navigation.getParam("photo");
-
   const [uploadMutation] = useMutation(UPLOAD, {
     refetchQueries: () => [{ query: FEED_QUERY }, { query: ME }] // 업로드시 해당 두개의 쿼리를 다시 해줌으로써, 홈화면과 프로필화면의 포스트 갱신
   });
@@ -93,8 +92,6 @@ export default ({ navigation }) => {
         }
       });
 
-      console.log("location:::", location);
-
       const {
         data: { upload }
       } = await uploadMutation({
@@ -108,7 +105,8 @@ export default ({ navigation }) => {
         navigation.navigate("TabNavigation");
       }
     } catch (error) {
-      Alert.alert("업로드 불가", "다시 시도해주세요");
+      console.log(error);
+      Alert.alert("업로드 불가", error);
     } finally {
       setIsLoading(false);
     }
