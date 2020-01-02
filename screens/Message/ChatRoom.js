@@ -33,6 +33,8 @@ const NEW_MESSAGE = gql`
       text
       from {
         id
+        username
+        avatar
       }
     }
   }
@@ -99,8 +101,13 @@ export default ({ navigation }) => {
     }
   });
 
+  const [messages, setMessages] = useState([]);
   //기존대화를 초기 messages로 설정
-  const [messages, setMessages] = useState([...roomInfo.seeRoom.messages]);
+  const oldSettiong = () => {
+    if (roomInfo) {
+      setMessages([...roomInfo.seeRoom.messages]);
+    }
+  };
 
   const [sendMessageMutation] = useMutation(SEND_MESSAGE, {
     variables: {
@@ -110,7 +117,7 @@ export default ({ navigation }) => {
     }
   });
 
-  const { data, loading } = useSubscription(NEW_MESSAGE, {
+  const { data } = useSubscription(NEW_MESSAGE, {
     variables: {
       roomId
     }
@@ -147,8 +154,12 @@ export default ({ navigation }) => {
   }, [data]);
 
   useEffect(() => {
-    toBottom(); // render/ rerender 시 스크롤 바닥으로.
+    toBottom(); // render, rerender 시 스크롤 바닥으로.
   });
+
+  useEffect(() => {
+    oldSettiong();
+  }, []);
 
   return (
     <Container>
@@ -173,9 +184,3 @@ export default ({ navigation }) => {
     </Container>
   );
 };
-
-// const [user, setUser] = useState(
-//   roomInfo.seeRoom.participants[0].id === roomInfo.seeRoom.messages.from.id
-// );
-
-// roomInfo.seeRoom.participants[0].id === newMs.from.id;

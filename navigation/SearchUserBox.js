@@ -52,7 +52,7 @@ const SearchUserBox = ({ id, username, avatar, navigation }) => {
   const [sendMessageMutation] = useMutation(SEND_MESSAGE, {
     variables: {
       toId: id,
-      message: "채팅참여"
+      message: ""
     }
   });
 

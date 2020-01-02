@@ -41,7 +41,7 @@ export default function App() {
       });
 
       // #이미지 등 asset prload
-      await Asset.loadAsync([require("./assets/instaLogo.jpeg")]); //
+      await Asset.loadAsync([require("./assets/main_logo.png")]); //
 
       // #메모리 캐시 생성 후 persist로 저장 시키기
       const cache = new InMemoryCache();

@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import styles from "../styles";
+import { View } from "react-native";
 
 const Text = styled.Text`
   margin: 10px;
@@ -14,7 +15,7 @@ const Text = styled.Text`
 `;
 
 const ChatTextBox = ({ message, me }) => {
-  return <Text me={me}>{message}</Text>;
+  return <View>{message !== "" && <Text me={me}>{message}</Text>}</View>;
 };
 
 export default ChatTextBox;

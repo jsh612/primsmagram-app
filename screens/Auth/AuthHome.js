@@ -12,6 +12,7 @@ const View = styled.View`
 const Image = styled.Image`
   width: ${constants.width / 2.5};
   height: ${constants.height / 10};
+  margin-bottom: 20px;
 `;
 
 const Touchable = styled.TouchableOpacity``;
@@ -30,7 +31,7 @@ export default ({ navigation }) => (
   <View>
     <Image
       resizeMode={"contain"}
-      source={require("../../assets/instaLogo.jpeg")}
+      source={require("../../assets/main_logo.png")}
     />
     <AuthButton
       text={"새로운 계정 생성"}

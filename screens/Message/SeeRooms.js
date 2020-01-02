@@ -1,10 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { gql } from "apollo-boost";
 import { useQuery } from "@apollo/react-hooks";
+import { Platform, RefreshControl } from "react-native";
 import SearchUserBox from "../../navigation/SearchUserBox";
 import NavIcon from "../../components/NavIcon";
-import { Platform } from "react-native";
+import Loader from "../../components/Loader";
 
 const SEE_ROOMS = gql`
   query seeRooms {
@@ -19,8 +20,9 @@ const SEE_ROOMS = gql`
   }
 `;
 
-const Container = styled.View`
+const Container = styled.ScrollView`
   margin: 10px;
+  padding: 5px;
 `;
 
 const Touchable = styled.TouchableOpacity`
@@ -45,32 +47,54 @@ const RoomContainer = styled.View`
 
 const SeeRoom = ({ navigation }) => {
   const { data, loading, refetch } = useQuery(SEE_ROOMS);
+  const [refreshing, setRefreshing] = useState(false);
 
   const onPress = () => navigation.navigate("SearchUser");
 
+  const refresh = async () => {
+    try {
+      setRefreshing(true);
+      refetch();
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setRefreshing(false);
+    }
+  };
+
   useEffect(() => {
     refetch();
-  });
+  }, []);
   return (
-    <Container>
-      <Touchable onPress={onPress}>
-        <NavIcon
-          size={26}
-          name={
-            Platform.OS === "ios"
-              ? "ios-add-circle-outline"
-              : "md-add-circle-outline"
-          }
-        />
-        <Text>추가</Text>
-      </Touchable>
-      <RoomContainer>
-        {data &&
-          data.seeRooms &&
-          data.seeRooms.map(room => (
-            <SearchUserBox key={room.id} {...room.participants[1]} />
-          ))}
-      </RoomContainer>
+    <Container
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={refresh} />
+      }
+    >
+      {loading ? (
+        <Loader />
+      ) : (
+        <>
+          <Touchable onPress={onPress}>
+            <NavIcon
+              size={26}
+              name={
+                Platform.OS === "ios"
+                  ? "ios-add-circle-outline"
+                  : "md-add-circle-outline"
+              }
+            />
+            <Text>추가</Text>
+          </Touchable>
+          <RoomContainer>
+            {data &&
+              data.seeRooms &&
+              data.seeRooms.map(room => (
+                <SearchUserBox key={room.id} {...room.participants[1]} />
+              ))}
+          </RoomContainer>
+        </>
+      )}
     </Container>
   );
 };

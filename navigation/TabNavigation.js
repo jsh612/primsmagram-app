@@ -4,7 +4,6 @@ import { createStackNavigator } from "react-navigation-stack";
 import { View, Platform } from "react-native";
 import Home from "../screens/Tabs/Home";
 import Search from "../screens/Tabs/Search";
-import Notifications from "../screens/Tabs/Notifications";
 import Profile from "../screens/Tabs/Profile";
 import MessagesLink from "../components/MessagesLink";
 import NavIcon from "../components/NavIcon";
@@ -120,29 +119,7 @@ export default createBottomTabNavigator(
         )
       }
     },
-    Notifications: {
-      screen: stackFactory(Notifications, {
-        title: "Notifications"
-      }),
-      navigationOptions: {
-        tabBarIcon: ({ focused }) => (
-          <NavIcon
-            size={26}
-            name={
-              Platform.OS === "ios"
-                ? focused
-                  ? "ios-heart"
-                  : "ios-heart-empty"
-                : focused
-                ? "md-heart"
-                : "md-heart-empty"
-            }
-            focused={focused}
-            color={styles.blueColor}
-          />
-        )
-      }
-    },
+
     Profile: {
       screen: stackFactory(Profile, {
         title: "Profile"
