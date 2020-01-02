@@ -1,12 +1,29 @@
 import { createStackNavigator } from "react-navigation-stack";
-import Messaage from "../screens/Message/Message";
-import Messaages from "../screens/Message/Messages";
+import SearchUser from "../screens/Message/SearchUser";
+import ChatRoom from "../screens/Message/ChatRoom";
 import { stackStyles } from "./config";
+import SeeRooms from "../screens/Message/SeeRooms";
 
 export default createStackNavigator(
   {
-    Messaage,
-    Messaages
+    SeeRooms: {
+      screen: SeeRooms,
+      navigationOptions: {
+        title: "채팅방"
+      }
+    },
+    SearchUser: {
+      screen: SearchUser,
+      navigationOptions: {
+        title: "대화상대 찾기"
+      }
+    },
+    ChatRoom: {
+      screen: ChatRoom,
+      navigationOptions: {
+        title: "대화중"
+      }
+    }
   },
   {
     defaultNavigationOptions: {
