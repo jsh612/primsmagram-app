@@ -14,8 +14,6 @@ const View = styled.View`
   flex: 1;
 `;
 
-const Text = styled.Text``;
-
 export default ({ navigation }) => {
   const emailInput = useInput(navigation.getParam("email", ""));
   const [loading, setLoading] = useState(false);
@@ -27,6 +25,7 @@ export default ({ navigation }) => {
   });
 
   const handleLogin = async () => {
+    console.log("로그인보냄");
     const { value } = emailInput;
     const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     if (value === "") {
