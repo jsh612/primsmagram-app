@@ -83,14 +83,19 @@ export default ({ navigation }) => {
     });
 
     try {
+      console.log("진입::", formData);
       setIsLoading(true);
       const {
         data: { location }
-      } = await axios.post("http://localhost:4000/api/upload", formData, {
-        headers: {
-          "content-type": "multipart/form-data"
+      } = await axios.post(
+        "https://sh-prisma-test.herokuapp.com/api/upload",
+        formData,
+        {
+          headers: {
+            "content-type": "multipart/form-data"
+          }
         }
-      });
+      );
 
       const {
         data: { upload }

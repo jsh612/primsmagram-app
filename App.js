@@ -59,12 +59,14 @@ export default function App() {
       // });
       const httpLink = new HttpLink({
         // link는 아폴로가 데이터를 방는 방식
-        uri: "http://localhost:4000"
+        // uri: "http://localhost:4000"
+        uri: "https://sh-prisma-test.herokuapp.com/"
       });
 
       const wsLink = new WebSocketLink({
         // link는 아폴로가 데이터를 방는 방식
-        uri: `ws://localhost:4000/`,
+        // uri: `ws://localhost:4000/`,
+        uri: "ws://sh-prisma-test.herokuapp.com/",
         options: {
           reconnect: true
         }
