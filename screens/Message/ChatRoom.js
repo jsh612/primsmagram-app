@@ -93,6 +93,7 @@ const TextInput = styled.TextInput`
 export default ({ navigation }) => {
   const toId = navigation.getParam("id");
   const roomId = navigation.getParam("roomId");
+  const meId = navigation.getParam("meId");
   const messageInput = useInput("");
 
   const { data: roomInfo, loading: roomLoading, refetch } = useQuery(SEE_ROOM, {
@@ -166,11 +167,7 @@ export default ({ navigation }) => {
       <MessageWrraper ref={scroll}>
         {messages &&
           messages.map(m => (
-            <ChatTextBox
-              me={roomInfo.seeRoom.participants[0].id === m.from.id}
-              key={m.id}
-              message={m.text}
-            />
+            <ChatTextBox me={meId === m.from.id} key={m.id} message={m.text} />
           ))}
       </MessageWrraper>
       <TextInput

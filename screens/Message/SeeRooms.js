@@ -3,9 +3,10 @@ import styled from "styled-components";
 import { gql } from "apollo-boost";
 import { useQuery } from "@apollo/react-hooks";
 import { Platform, RefreshControl } from "react-native";
-import SearchUserBox from "../../navigation/SearchUserBox";
+import SearchUserBox from "../../navigation/ChatRoomBox";
 import NavIcon from "../../components/NavIcon";
 import Loader from "../../components/Loader";
+import meChecker from "../../meChecker";
 
 const SEE_ROOMS = gql`
   query seeRooms {
@@ -48,6 +49,7 @@ const RoomContainer = styled.View`
 const SeeRoom = ({ navigation }) => {
   const { data, loading, refetch } = useQuery(SEE_ROOMS);
   const [refreshing, setRefreshing] = useState(false);
+  const meData = meChecker();
 
   const onPress = () => navigation.navigate("SearchUser");
 
@@ -89,9 +91,18 @@ const SeeRoom = ({ navigation }) => {
           <RoomContainer>
             {data &&
               data.seeRooms &&
-              data.seeRooms.map(room => (
-                <SearchUserBox key={room.id} {...room.participants[1]} />
-              ))}
+              data.seeRooms.map(room => {
+                const otherUser = room.participants.filter(
+                  v => v.id !== meData.data.me.id
+                )[0];
+                return (
+                  <SearchUserBox
+                    key={room.id}
+                    meId={meData.data.me.id}
+                    {...otherUser}
+                  />
+                );
+              })}
           </RoomContainer>
         </>
       )}

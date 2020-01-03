@@ -6,7 +6,7 @@ import { gql } from "apollo-boost";
 import { useQuery } from "@apollo/react-hooks";
 import { TouchableOpacity } from "react-native";
 import Loader from "../../components/Loader";
-import SearchUserBox from "../../navigation/SearchUserBox";
+import SearchUserBox from "../../navigation/ChatRoomBox";
 
 const SEARCH = gql`
   query searchUser($term: String!) {

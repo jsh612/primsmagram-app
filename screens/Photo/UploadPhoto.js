@@ -83,7 +83,6 @@ export default ({ navigation }) => {
     });
 
     try {
-      console.log("진입::", formData);
       setIsLoading(true);
       const {
         data: { location }

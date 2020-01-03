@@ -46,7 +46,7 @@ const Username = styled.Text`
   width: 70%;
 `;
 
-const SearchUserBox = ({ id, username, avatar, navigation }) => {
+const SearchUserBox = ({ id, username, avatar, navigation, meId }) => {
   const [refresh, setRefresh] = useState("");
 
   const [sendMessageMutation] = useMutation(SEND_MESSAGE, {
@@ -63,7 +63,8 @@ const SearchUserBox = ({ id, username, avatar, navigation }) => {
     setRefresh(sendMessage.id);
     navigation.navigate("ChatRoom", {
       id,
-      roomId: sendMessage.room.id
+      roomId: sendMessage.room.id,
+      meId
     });
   };
 
