@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { gql } from "apollo-boost";
 import { useQuery } from "@apollo/react-hooks";
 import { Platform, RefreshControl } from "react-native";
-import SearchUserBox from "../../navigation/ChatRoomBox";
+import ChatRoomBox from "../../navigation/ChatRoomBox";
 import NavIcon from "../../components/NavIcon";
 import Loader from "../../components/Loader";
 import meChecker from "../../meChecker";
@@ -64,9 +64,6 @@ const SeeRoom = ({ navigation }) => {
     }
   };
 
-  useEffect(() => {
-    refetch();
-  }, []);
   return (
     <Container
       refreshControl={
@@ -96,7 +93,7 @@ const SeeRoom = ({ navigation }) => {
                   v => v.id !== meData.data.me.id
                 )[0];
                 return (
-                  <SearchUserBox
+                  <ChatRoomBox
                     key={room.id}
                     meId={meData.data.me.id}
                     {...otherUser}

@@ -6,7 +6,8 @@ import { gql } from "apollo-boost";
 import { useQuery } from "@apollo/react-hooks";
 import { TouchableOpacity } from "react-native";
 import Loader from "../../components/Loader";
-import SearchUserBox from "../../navigation/ChatRoomBox";
+import ChatRoomBox from "../../navigation/ChatRoomBox";
+import meChecker from "../../meChecker";
 
 const SEARCH = gql`
   query searchUser($term: String!) {
@@ -44,6 +45,7 @@ const UserContainer = styled.View`
 export default ({ navigation }) => {
   const searchInput = useInput("");
   const [shouldFetch, setShouldFetch] = useState(false);
+  const meData = meChecker();
 
   const { data, loading } = useQuery(SEARCH, {
     variables: {
@@ -72,7 +74,7 @@ export default ({ navigation }) => {
           {data &&
             data.searchUser &&
             data.searchUser.map(user => (
-              <SearchUserBox key={user.id} {...user} />
+              <ChatRoomBox key={user.id} {...user} meId={meData.data.me.id} />
             ))}
         </UserContainer>
       )}
