@@ -109,7 +109,7 @@ export default ({ navigation }) => {
       const result = await Google.logInAsync({
         iosClientId:
           //참조
-          "197992685258-6u0isnpjsrs7dc1il65ec5tn7ts7vm73.apps.googleusercontent.com",
+          "1010359324965-3hdrnlec4n9tosl19ho3jubs6ojf10lu.apps.googleusercontent.com",
         scopes: ["profile", "email"]
       });
 
