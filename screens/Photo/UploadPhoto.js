@@ -76,6 +76,8 @@ export default ({ navigation }) => {
     const formData = new FormData();
     const name = photo.filename;
     const [, type] = name.split(".");
+
+    // "file" 나중에 백엔드에서 업로드 작성시, mutler가 파일을 찾는 키값(아무거나 해도 상관없음.)
     formData.append("file", {
       name,
       type: type.toLowerCase(),
